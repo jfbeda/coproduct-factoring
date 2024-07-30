@@ -3,49 +3,881 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[         0,          0]
-NotebookDataLength[     51768,       1105]
-NotebookOptionsPosition[     51163,       1083]
-NotebookOutlinePosition[     51558,       1099]
-CellTagsIndexPosition[     51515,       1096]
+NotebookDataLength[     52745,       1098]
+NotebookOptionsPosition[     52140,       1076]
+NotebookOutlinePosition[     52535,       1092]
+CellTagsIndexPosition[     52492,       1089]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-Cell[BoxData[{
+Cell[BoxData[
  RowBox[{
-  RowBox[{"ClearAll", "[", "findAnIdentity", "]"}], "\n", 
   RowBox[{"(*", 
    RowBox[{
-    RowBox[{
-    "Takes", " ", "in", " ", "a", " ", "list", " ", "of", " ", "logarithms", 
-     " ", "and", " ", "attempts", " ", "to", " ", "find", " ", "an", " ", 
-     "identity", " ", "between", " ", "them", " ", "using", " ", 
-     RowBox[{"FindIntegerNullVector", ".", " ", "If"}], " ", "it", " ", 
-     "cannot"}], ",", " ", 
-    RowBox[{"it", " ", "will", " ", "return", " ", "False"}], ",", " ", 
-    RowBox[{"if", " ", "it", " ", "can"}], ",", " ", 
-    RowBox[{
-    "it", " ", "returns", " ", "a", " ", "rule", " ", "that", " ", "sends", 
-     " ", "the", " ", "most", " ", "complex", " ", "part", " ", "of", " ", 
-     "the", " ", "identity", " ", "to", " ", "the", " ", "other", " ", 
-     "ones"}]}], "*)"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
+   "Finds", " ", "logarithmic", " ", "identities", " ", "in", " ", "an", " ", 
+    "expression", " ", "pseudorandomly"}], "*)"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
   RowBox[{
+   RowBox[{"ClearAll", "[", "findAnIdentity", "]"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "Takes", " ", "in", " ", "a", " ", "list", " ", "of", " ", "logarithms", 
+      " ", "and", " ", "attempts", " ", "to", " ", "find", " ", "an", " ", 
+      "identity", " ", "between", " ", "them", " ", "using", " ", 
+      RowBox[{"FindIntegerNullVector", ".", " ", "If"}], " ", "it", " ", 
+      "cannot"}], ",", " ", 
+     RowBox[{"it", " ", "will", " ", "return", " ", "False"}], ",", " ", 
+     RowBox[{"if", " ", "it", " ", "can"}], ",", " ", 
+     RowBox[{
+     "it", " ", "returns", " ", "a", " ", "rule", " ", "that", " ", "sends", 
+      " ", "the", " ", "most", " ", "complex", " ", "part", " ", "of", " ", 
+      "the", " ", "identity", " ", "to", " ", "the", " ", "other", " ", 
+      "ones"}]}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"findAnIdentity", "[", "logs_List", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"findAnIdentity", "[", "logs_List", "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "alteredList", ",", "variables", ",", "primes", ",", 
+         "substitutionRules", ",", "coefficients", ",", "identity", ",", 
+         "norm"}], "}"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Generate", " ", "rules", " ", "to", " ", "randomly", " ", "assign", 
+         " ", "values", " ", "to", " ", "the", " ", "lgoarithms", " ", "so", 
+         " ", "that", " ", "they", " ", "may", " ", "be", " ", "added", " ", 
+         "to", " ", "FindIntegerNullVector"}], "*)"}], "\[IndentingNewLine]", 
+       
+       RowBox[{
+        RowBox[{"variables", " ", "=", " ", 
+         RowBox[{"{", 
+          RowBox[{"u1", ",", "u2", ",", "u3"}], "}"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"primes", " ", "=", " ", 
+         RowBox[{"Map", "[", 
+          RowBox[{"Prime", ",", 
+           RowBox[{"RandomSample", "[", 
+            RowBox[{
+             RowBox[{"Range", "[", 
+              RowBox[{"20", ",", "100"}], "]"}], ",", "3"}], "]"}]}], "]"}]}],
+         ";", "\[IndentingNewLine]", 
+        RowBox[{"substitutionRules", " ", "=", " ", 
+         RowBox[{"Thread", "[", 
+          RowBox[{"variables", " ", "->", "primes"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"If", " ", "the", " ", "list", " ", 
+           RowBox[{"doesn", "'"}], "t", " ", "already", " ", "contain", " ", 
+           "Pi"}], ",", " ", 
+          RowBox[{
+          "add", " ", "that", " ", "in", " ", "as", " ", "an", " ", "option", 
+           " ", "for", " ", "FindIntegerNullVector", " ", "to", " ", "play", 
+           " ", "with"}]}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"MemberQ", "[", 
+           RowBox[{"logs", ",", "Pi"}], "]"}], ",", 
+          RowBox[{"alteredList", " ", "=", " ", "logs"}], ",", 
+          RowBox[{
+           RowBox[{"alteredList", "=", " ", 
+            RowBox[{"logs", "//", 
+             RowBox[{"Append", "[", 
+              RowBox[{"I", " ", "Pi"}], "]"}]}]}], ";"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Try", " ", "to", " ", "find", " ", "an", " ", "integer", " ", 
+          "null", " ", "vector", " ", "with", " ", "norm", " ", "less", " ", 
+          "than", " ", "40"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"coefficients", "=", 
+         RowBox[{"Check", "[", 
+          RowBox[{
+           RowBox[{"FindIntegerNullVector", "[", 
+            RowBox[{
+             RowBox[{"N", "[", 
+              RowBox[{"alteredList", "/.", " ", "substitutionRules"}], "]"}], 
+             ",", "40"}], "]"}], ",", "False"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"norm", " ", "=", " ", 
+         RowBox[{"coefficients", ".", 
+          RowBox[{"Conjugate", "[", "coefficients", "]"}]}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"norm", " ", ">", " ", "40"}], ",", " ", 
+          RowBox[{"coefficients", " ", "=", " ", "False"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"coefficients", "===", "False"}], ",", 
+          RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Generate", " ", "the", " ", "logarithm", " ", "rule", " ", "from", 
+          " ", "the", " ", "coefficient", " ", "list"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"identity", " ", "=", " ", 
+         RowBox[{"ruleFromCoefficients", "[", 
+          RowBox[{"coefficients", ",", "alteredList"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+          "If", " ", "the", " ", "identity", " ", "is", " ", "trivial"}], ",",
+           " ", 
+          RowBox[{
+           RowBox[{"i", ".", "e", ".", " ", "a"}], "->", "a"}], ",", " ", 
+          RowBox[{"return", " ", "False"}]}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"removeTrivialIdentities", "[", 
+            RowBox[{"{", "identity", "}"}], "]"}], "===", 
+           RowBox[{"{", "}"}]}], ",", 
+          RowBox[{
+           RowBox[{"Print", "[", "\"\<Trivial identity\>\"", "]"}], ";", 
+           RowBox[{"Return", "[", "False", "]"}]}]}], "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+          "Last", " ", "double", " ", "check", " ", "that", " ", "the", " ", 
+           "identity", " ", "is", " ", "in", " ", "fact", " ", "valid"}], ",",
+           " ", 
+          RowBox[{
+          "this", " ", "time", " ", "with", " ", "different", " ", 
+           "primes"}]}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"verifyRule", "[", "identity", "]"}], ",", 
+          RowBox[{"Return", "[", "identity", "]"}], ",", 
+          RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";"}]}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "verifyRule", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+      "Verifies", " ", "if", " ", "a", " ", "rule", " ", "is", " ", "correct",
+        " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"IN", " ", "THE", " ", "VARIABLES", " ", "u1"}], ",", " ", 
+          "u2", ",", "u3"}], ")"}], ".", " ", "For"}], " ", "example", " ", 
+       RowBox[{"Log", "[", 
+        RowBox[{"2", "u1"}], "]"}]}], "->", " ", 
+      RowBox[{
+       RowBox[{"Log", "[", "2", "]"}], "+", 
+       RowBox[{
+        RowBox[{"Log", "[", "u1", "]"}], " ", "returns", " ", "True"}]}]}], 
+     ",", " ", 
+     RowBox[{
+      RowBox[{"but", " ", 
+       RowBox[{"Log", "[", "u2", "]"}]}], "->", 
+      RowBox[{
+       RowBox[{"Log", "[", "u1", "]"}], " ", "returns", " ", "False"}]}]}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"verifyRule", "[", "rule_", "]"}], ":=", 
     RowBox[{"Module", "[", 
      RowBox[{
       RowBox[{"{", 
        RowBox[{
-       "alteredList", ",", "variables", ",", "primes", ",", 
-        "substitutionRules", ",", "coefficients", ",", "identity", ",", 
-        "norm"}], "}"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       "variables", ",", "primes", ",", "substitutionRules", ",", 
+        "substitutedRule"}], "}"}], ",", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{"(*", 
        RowBox[{
        "Generate", " ", "rules", " ", "to", " ", "randomly", " ", "assign", 
-        " ", "values", " ", "to", " ", "the", " ", "lgoarithms", " ", "so", 
-        " ", "that", " ", "they", " ", "may", " ", "be", " ", "added", " ", 
-        "to", " ", "FindIntegerNullVector"}], "*)"}], "\[IndentingNewLine]", 
+        " ", "values", " ", "to", " ", "the", " ", "lgoarithms"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"variables", " ", "=", " ", 
+        RowBox[{"{", 
+         RowBox[{"u1", ",", "u2", ",", "u3"}], "}"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"primes", " ", "=", " ", 
+        RowBox[{"Map", "[", 
+         RowBox[{"Prime", ",", 
+          RowBox[{"RandomSample", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"100", ",", "200"}], "]"}], ",", "3"}], "]"}]}], "]"}]}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"substitutionRules", " ", "=", " ", 
+        RowBox[{"Thread", "[", 
+         RowBox[{"variables", " ", "->", "primes"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Substitute", " ", "random", " ", "values", " ", "into", " ", "the", 
+         " ", "rule", " ", "to", " ", "check"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"substitutedRule", " ", "=", " ", 
+        RowBox[{"N", "[", 
+         RowBox[{"rule", "/.", "substitutionRules"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Check", " ", "the", " ", "LHS", " ", "and", " ", "RHS", " ", "are", 
+         " ", "the", " ", "same"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Chop", "[", 
+           RowBox[{
+            RowBox[{"Keys", "[", "substitutedRule", "]"}], "-", 
+            RowBox[{"Values", "[", "substitutedRule", "]"}]}], "]"}], "==", 
+          "0"}], ",", "True", ",", "False"}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "ruleFromCoefficients", "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "Given", " ", "a", " ", "list", " ", "of", " ", "logarithms", " ", "and",
+       " ", "coefficients"}], ",", " ", 
+     RowBox[{
+     "found", " ", "by", " ", "FindIntegerNullVector", " ", "that", " ", 
+      "encode", " ", "a", " ", "relation", " ", "between", " ", "the", " ", 
+      "logarithms"}], ",", " ", 
+     RowBox[{
+      RowBox[{"generate", " ", "a", " ", "rule", " ", "a"}], "->", 
+      RowBox[{
+      "b", " ", "that", " ", "sends", " ", "the", " ", "most", " ", 
+       "complicated", " ", "part", " ", "of", " ", "logarithms", " ", "to", 
+       " ", "a", " ", "simplification", " ", "given", " ", "by", " ", "the", 
+       " ", 
+       RowBox[{"coefficients", ".", " ", "\"\<complicated\>\""}], " ", "is", 
+       " ", "given", " ", "here", " ", "by", " ", "the", " ", 
+       "LeafCount"}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ruleFromCoefficients", "[", 
+     RowBox[{"coefficients_", ",", " ", "logs_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "leafCounts", ",", "leafCountOrdering", ",", "largestLeafCountIndex", 
+        ",", "rule", ",", "normalizedCoefficients"}], "}"}], ",", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"leafCounts", " ", "=", " ", 
+        RowBox[{"Map", "[", 
+         RowBox[{"LeafCount", ",", "logs"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"leafCountOrdering", " ", "=", "  ", 
+        RowBox[{"Ordering", "[", "leafCounts", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+         "This", " ", "is", " ", "the", " ", "index", " ", "of", " ", "the", 
+          " ", "element", " ", "of", " ", "logs", " ", "with", " ", "the", 
+          " ", "largest", " ", "leaf", " ", "count", " ", "that", " ", 
+          "still", " ", "has", " ", "a", " ", "non"}], "-", 
+         RowBox[{
+         "zero", " ", "corresponding", " ", "element", " ", "in", " ", 
+          "coefficients"}]}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"largestLeafCountIndex", "=", 
+        RowBox[{"Last", "[", 
+         RowBox[{"Select", "[", 
+          RowBox[{"leafCountOrdering", ",", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"coefficients", "[", 
+              RowBox[{"[", "#", "]"}], "]"}], "=!=", "0"}], "&"}]}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"normalizedCoefficients", " ", "=", " ", 
+        RowBox[{"coefficients", "/", 
+         RowBox[{"coefficients", "[", 
+          RowBox[{"[", "largestLeafCountIndex", "]"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"rule", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"logs", "[", 
+          RowBox[{"[", "largestLeafCountIndex", "]"}], "]"}], "->", 
+         RowBox[{"-", 
+          RowBox[{
+           RowBox[{"Drop", "[", 
+            RowBox[{"logs", ",", 
+             RowBox[{"{", "largestLeafCountIndex", "}"}]}], "]"}], ".", 
+           RowBox[{"Drop", "[", 
+            RowBox[{"normalizedCoefficients", ",", 
+             RowBox[{"{", "largestLeafCountIndex", "}"}]}], "]"}]}]}]}]}], 
+       ";", "\[IndentingNewLine]", "rule"}]}], "\[IndentingNewLine]", "]"}]}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "seperateLogsByWeight", "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Given", " ", "a", " ", "list", " ", "of", " ", "Logs"}], ",", 
+     " ", 
+     RowBox[{
+      RowBox[{"returns", " ", "a", " ", "nested", " ", 
+       RowBox[{"list", ".", " ", "The"}], " ", "nth", " ", "entry", " ", 
+       "contains", " ", "a", " ", "list", " ", "of", " ", "all", " ", 
+       "weight", " ", "n", " ", "polylogs", " ", "present", " ", "in", " ", 
+       "the", " ", "initial", " ", 
+       RowBox[{"list", ".", " ", "For"}], " ", 
+       RowBox[{"example", ":", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Log", "[", "z", "]"}], ",", 
+          RowBox[{
+           RowBox[{"Log", "[", "z", "]"}], "^", "2"}], ",", 
+          RowBox[{
+           RowBox[{"Log", "[", "w", "]"}], 
+           RowBox[{"Log", "[", "z", "]"}]}]}], "}"}]}]}], "->", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"Log", "[", "z", "]"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Log", "[", "z", "]"}], "^", "2"}], ",", 
+           RowBox[{
+            RowBox[{"Log", "[", "w", "]"}], 
+            RowBox[{"Log", "[", "z", "]"}]}]}], "}"}]}], "}"}], 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"WARNING", ".", " ", "This"}], " ", "will", " ", "run", " ", 
+       "into", " ", "problems", " ", "if"}]}], ",", " ", 
+     RowBox[{"for", " ", "example"}], ",", " ", 
+     RowBox[{"there", " ", "are", " ", "weight", " ", "1"}], ",", " ", 
+     RowBox[{"and", " ", "weight", " ", "3", " ", "polylogs"}], ",", " ", 
+     RowBox[{"but", " ", "no", " ", "weight", " ", "2", " ", 
+      RowBox[{"logs", ".", " ", "It"}], " ", "will", " ", "stop", " ", 
+      "checking", " ", "after", " ", "it", " ", "fails", " ", "to", " ", 
+      "find", " ", "any", " ", "at", " ", "weight", " ", "2"}]}], 
+    "\[IndentingNewLine]", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"seperateLogsByWeight", "[", "logs_List", "]"}], " ", ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"logsSeperatedbyWeight", ",", "weight", ",", "current"}], 
+       "}"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"logsSeperatedbyWeight", " ", "=", 
+        RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"weight", " ", "=", " ", "1"}], ";", " ", 
+       RowBox[{"(*", 
+        RowBox[{"Incrementing", " ", "counter"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"current", " ", "=", " ", 
+        RowBox[{"onlyThisPolyLogWeight", "[", 
+         RowBox[{"logs", ",", "weight"}], "]"}]}], ";", "\[IndentingNewLine]",
+        "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Loop", " ", "th"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"While", "[", 
+        RowBox[{
+         RowBox[{"current", "=!=", 
+          RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"logsSeperatedbyWeight", ",", "current"}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"weight", "++"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"current", " ", "=", " ", 
+           RowBox[{"onlyThisPolyLogWeight", "[", 
+            RowBox[{"logs", ",", "weight"}], "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"Not", "[", 
+          RowBox[{"ContainsExactly", "[", 
+           RowBox[{
+            RowBox[{"Flatten", "[", "logsSeperatedbyWeight", "]"}], ",", 
+            "logs"}], "]"}], "]"}], ",", 
+         RowBox[{
+         "Print", "[", 
+          "\"\<ERROR, the Log seperation by weight has failed. Maybe there \
+are not copies of polylogs of every weight up to the max weight (i.e. \
+1,2,3,missing 4,5) in which case it will stop at 3\>\"", "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       "logsSeperatedbyWeight"}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "findIdentities", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Takes", " ", "in", " ", "an", " ", "expression"}], ",", " ", 
+     RowBox[{
+     "and", " ", "loops", " ", "over", " ", "various", " ", "weights", " ", 
+      "to", " ", "try", " ", "and", " ", "find", " ", "identities", " ", 
+      "between", " ", "the", " ", "lgoarithms", " ", "in", " ", "the", " ", 
+      "expression"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"findIdentities", "[", 
+     RowBox[{"expr_", ",", 
+      RowBox[{"LHSQ_", ":", "True"}]}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "identities", ",", "logs", ",", "tempexpr", ",", "failures", ",", 
+        "logsSeperatedbyWeight", ",", "maxWeight", ",", "identity", ",", 
+        "weightLogList", ",", "maximumLength", ",", "maxFailures"}], "}"}], 
+      ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"tempexpr", " ", "=", " ", "expr"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"identities", " ", "=", " ", 
+        RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"Style", "[", 
+         RowBox[{"\"\<Finding Log Identities\>\"", ",", "Bold"}], "]"}], 
+        "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Acquire", " ", "the", " ", "vectors", " ", "to", " ", "play", " ", 
+         "with", " ", "from", " ", "either", " ", "the", " ", "LHS", " ", 
+         "or", " ", "RHS"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{"LHSQ", ",", 
+         RowBox[{
+          RowBox[{"logs", " ", "=", " ", 
+           RowBox[{"DeleteDuplicates", "[", 
+            RowBox[{"getLHS", "[", "expr", "]"}], "]"}]}], ";"}], ",", " ", 
+         RowBox[{
+          RowBox[{"logs", " ", "=", " ", 
+           RowBox[{"DeleteDuplicates", "[", 
+            RowBox[{"getRHS", "[", "expr", "]"}], "]"}]}], ";"}]}], "]"}], 
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"logsSeperatedbyWeight", " ", "=", " ", 
+        RowBox[{"seperateLogsByWeight", "[", "logs", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"maxWeight", " ", "=", " ", 
+        RowBox[{"Length", "[", "logsSeperatedbyWeight", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{
+        "\"\<The maximum weight in your expression is : \>\"", ",", " ", 
+         "maxWeight"}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<The number of terms of each weight is : \>\"", ",", 
+         RowBox[{"Map", "[", 
+          RowBox[{"Length", ",", "logsSeperatedbyWeight"}], "]"}]}], " ", 
+        "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"Loop", " ", "through", " ", "each", " ", "weight"}], ",", 
+         " ", 
+         RowBox[{
+         "and", " ", "try", " ", "various", " ", "methods", " ", "for", " ", 
+          "finding", " ", "identites"}]}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"maximumLength", " ", "=", " ", "100"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"weightLogList", " ", "=", " ", 
+           RowBox[{"logsSeperatedbyWeight", "[", 
+            RowBox[{"[", "weight", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", 
+           RowBox[{"Style", "[", 
+            RowBox[{
+             RowBox[{"Row", "[", 
+              RowBox[{"{", 
+               RowBox[{
+               "\"\<Finding Identities at weight \>\"", ",", " ", "weight"}], 
+               "}"}], "]"}], ",", "Bold"}], "]"}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{"True", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"failures", " ", "=", " ", "0"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Length", "[", "weightLogList", "]"}], "<", 
+                "maximumLength"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"If", " ", "True"}], "..."}], "*)"}], 
+               "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               RowBox[{"While", "[", 
+                RowBox[{
+                 RowBox[{"failures", "<", "5"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"identity", " ", "=", " ", 
+                   RowBox[{"findAnIdentity", "[", "weightLogList", "]"}]}], 
+                  ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"identity", " ", "===", " ", "False"}], " ", "||",
+                     " ", 
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"identities", ",", "identity"}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"failures", " ", "++"}], ";"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Break", "[", "]"}], ";"}]}], "]"}]}]}], "]"}], 
+               "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{"Else", "..."}], "*)"}], "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"maxFailures", " ", "=", " ", "10"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"While", "[", 
+                 RowBox[{
+                  RowBox[{"failures", "<", "maxFailures"}], ",", 
+                  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<The size of the list at this weight is too large (\>\
+\"", "<>", " ", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"Length", "[", "weightLogList", "]"}], "]"}], "<>",
+                     " ", "\"\<). Instead, choosing 100 terms at random. \
+Attempt \>\"", "<>", " ", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"(", 
+                    RowBox[{"failures", "+", "1"}], ")"}], "]"}], " ", "<>", 
+                    " ", "\"\</\>\"", " ", "<>", " ", 
+                    RowBox[{"ToString", "[", "maxFailures", "]"}], " ", "<>", 
+                    " ", "\"\<.\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"identity", " ", "=", " ", 
+                    RowBox[{"findAnIdentity", "[", 
+                    RowBox[{"RandomSample", "[", 
+                    RowBox[{"weightLogList", ",", "100"}], "]"}], "]"}]}], 
+                   ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"identity", " ", "===", " ", "False"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"failures", " ", "++"}], ";"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Break", "[", "]"}], ";"}]}], "]"}]}]}], 
+                 "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]",
+               "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"identity", " ", "===", " ", "False"}], "||", 
+                RowBox[{"MemberQ", "[", 
+                 RowBox[{"identities", ",", "identity"}], "]"}]}], ",", 
+               RowBox[{"Break", "[", "]"}], ",", 
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"identities", ",", "identity"}], "]"}]}], "]"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Print", "[", "identity", "]"}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", " ", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<Current number of identities: \>\"", ",", " ", 
+            RowBox[{"Length", "[", "identities", "]"}]}], "]"}], ";"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{"\"\<Current Identities: \>\"", ",", "identities"}], 
+            "]"}], ";"}], "*)"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"weight", ",", 
+           RowBox[{"Length", "[", "logsSeperatedbyWeight", "]"}]}], "}"}]}], 
+        "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       "identities"}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "Takes", " ", "a", " ", "list", " ", "of", " ", "identities", " ", "and",
+       " ", "removes", " ", "any", " ", "of", " ", "the", " ", "form", " ", 
+      "a_"}], " ", "->", " ", "a_"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"removeTrivialIdentities", "[", "rules_List", "]"}], ":=", 
+    RowBox[{"Select", "[", 
+     RowBox[{"rules", ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "=!=", 
+        RowBox[{"#", "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}], "&"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "beatOutLogIdentities", "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"Recursively", " ", "finds", " ", "identities"}], ",", " ", 
+     RowBox[{"applies", " ", "them"}], ",", " ", 
+     RowBox[{
+     "and", " ", "then", " ", "finds", " ", "more", " ", "identities", " ", 
+      "to", " ", "\"\<beat out\>\"", " ", "the", " ", "log", " ", 
+      "identities", " ", "from", " ", "an", " ", 
+      RowBox[{"expression", ".", " ", "Repeats"}], " ", "until", " ", 
+      RowBox[{"(", 
+       RowBox[{"default", " ", "value", " ", "of"}], ")"}], " ", "5", " ", 
+      "cycles", " ", "have", " ", "taken", " ", 
+      RowBox[{"place", ".", " ", "Takes"}], " ", "a", " ", "long", " ", 
+      "time", " ", "to", " ", "run", " ", "and", " ", "produces", " ", "a", 
+      " ", "lot", " ", "of", " ", 
+      RowBox[{"output", ".", " ", "Returns"}], " ", "a", " ", "list", " ", 
+      "of", " ", "all", " ", "the", " ", "identities", " ", "it", " ", "has", 
+      " ", "found", " ", "and", " ", "the", " ", "\"\<beaten\>\"", " ", 
+      "expression"}]}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   
+   RowBox[{
+    RowBox[{"beatOutLogIdentities", "[", 
+     RowBox[{"expr_", ",", 
+      RowBox[{"nmax_", ":", "5"}]}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "omniIdentities", ",", "workingExpr", ",", "lhsidentities", ",", 
+        "rhsidentities", ",", "identities", ",", "counter"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+       "Print", "[", 
+        "\"\<Finding Log identies in the variables u1, u2, u3\>\"", "]"}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Number of terms in your expression : \>\"", ",", 
+         RowBox[{"Length", "[", 
+          RowBox[{"getLHS", "[", "expr", "]"}], "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"omniIdentities", " ", "=", " ", 
+        RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"counter", " ", "=", " ", "1"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"workingExpr", " ", "=", " ", "expr"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"While", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "identities", "]"}], " ", ">", " ", "1"}], 
+          " ", "||", " ", 
+          RowBox[{"counter", " ", "<", "nmax"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Print", "[", 
+           RowBox[{"Style", "[", 
+            RowBox[{
+             RowBox[{"Row", "[", 
+              RowBox[{"{", 
+               RowBox[{
+               "\"\<FINDING IDENTITIES FOR THE \>\"", ",", " ", "counter", 
+                ",", "\"\< TIMES\>\""}], "}"}], "]"}], ",", "Bold"}], "]"}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"lhsidentities", " ", "=", " ", 
+           RowBox[{"findIdentities", "[", 
+            RowBox[{"workingExpr", ",", "True"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"rhsidentities", " ", "=", " ", 
+           RowBox[{"findIdentities", "[", 
+            RowBox[{"workingExpr", ",", "False"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", "\"\<------------\>\"", "]"}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"workingExpr", "//.", "lhsidentities"}], ")"}], " ", "===",
+              "workingExpr"}], ",", 
+            RowBox[{
+            "Print", "[", 
+             "\"\<WARNING, the LHS identities haven't done anything to the \
+expression\>\"", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"workingExpr", "//.", "rhsidentities"}], ")"}], " ", "===",
+              "workingExpr"}], ",", 
+            RowBox[{
+            "Print", "[", 
+             "\"\<WARNING, the RHS identities haven't done anything to the \
+expression\>\"", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"identities", " ", "=", " ", 
+           RowBox[{"Union", "[", 
+            RowBox[{"lhsidentities", ",", "rhsidentities"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"workingExpr", " ", "=", "  ", 
+           RowBox[{"workingExpr", "//.", "identities"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"workingExpr", " ", "=", " ", 
+           RowBox[{"fullExpandT", "[", "workingExpr", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"omniIdentities", " ", "=", " ", 
+           RowBox[{"Union", "[", 
+            RowBox[{"omniIdentities", ",", "identities"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"counter", " ", "++"}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"Style", "[", 
+         RowBox[{"\"\<Complete\>\"", ",", "Bold"}], "]"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Log separations by weight are: \>\"", ",", " ", 
+         RowBox[{"Map", "[", 
+          RowBox[{"Length", ",", 
+           RowBox[{"seperateLogsByWeight", "[", 
+            RowBox[{"DeleteDuplicates", "[", 
+             RowBox[{"getLHS", "[", "workingExpr", "]"}], "]"}], "]"}]}], 
+          "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Length of expression: \>\"", ",", 
+         RowBox[{"Length", "[", 
+          RowBox[{"getLHS", "[", "workingExpr", "]"}], "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"workingExpr", ",", "omniIdentities"}], "}"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "polyLogWeight", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Returns", " ", "the", " ", "weight", " ", "of", " ", "a", " ", 
+     RowBox[{"polylogarithm", ".", " ", "Does"}], " ", "not", " ", "work", 
+     " ", "on", " ", "sums", " ", "of", " ", "functions"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"polyLogWeight", "[", "expr_", "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "alteredExpression", ",", "piTerms", ",", "logTerms", ",", 
+        "polyLogTerms", ",", "logWeight"}], "}"}], ",", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Extract", " ", "logarithmic", " ", "and", " ", "polylogarithmic", " ",
+         "terms"}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "expr", "]"}], "==", "Plus"}], ",", 
+         RowBox[{
+         "Print", "[", 
+          "\"\<WARNING, trying to compute polylog weight of a sum\>\"", 
+          "]"}]}], "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "expr", "]"}], "=!=", "Times"}], ",", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"piTerms", " ", "=", " ", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"expr", ",", 
+             RowBox[{
+              RowBox[{"Pi", "^", "k_."}], " ", ":>", "k"}], ",", 
+             RowBox[{"{", "0", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"logTerms", "=", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"expr", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Log", "[", "_", "]"}], "^", "k_."}], ":>", "k"}], ",", 
+             RowBox[{"{", "0", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"polyLogTerms", "=", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"expr", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"PolyLog", "[", 
+                RowBox[{"n_", ",", "_"}], "]"}], "^", "k_."}], ":>", 
+              RowBox[{"n", " ", "k"}]}], ",", 
+             RowBox[{"{", "0", "}"}]}], "]"}]}], ";"}], ",", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         
+         RowBox[{
+          RowBox[{"piTerms", " ", "=", " ", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"expr", ",", 
+             RowBox[{
+              RowBox[{"Pi", "^", "k_."}], " ", ":>", "k"}], ",", 
+             RowBox[{"{", "1", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"logTerms", "=", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"expr", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Log", "[", "_", "]"}], "^", "k_."}], ":>", "k"}], ",", 
+             RowBox[{"{", "1", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"polyLogTerms", "=", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"expr", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"PolyLog", "[", 
+                RowBox[{"n_", ",", "_"}], "]"}], "^", "k_."}], ":>", 
+              RowBox[{"n", " ", "k"}]}], ",", 
+             RowBox[{"{", "1", "}"}]}], "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"logWeight", "=", " ", 
+        RowBox[{
+         RowBox[{"Total", "[", "piTerms", "]"}], "+", 
+         RowBox[{"Total", "[", "logTerms", "]"}], "+", 
+         RowBox[{"Total", "[", "polyLogTerms", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", "logWeight"}]}], "\[IndentingNewLine]", "]"}]}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Returns", " ", "a", " ", "subset", " ", "of", " ", "a", " ", "list", " ",
+      "of", " ", "polylogarithms", " ", "with", " ", "given", " ", "weight"}],
+     "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "onlyThisPolyLogWeight", "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"onlyThisPolyLogWeight", "[", 
+     RowBox[{"polylogs_List", ",", "weight_"}], "]"}], " ", ":=", 
+    RowBox[{"Cases", "[", 
+     RowBox[{"polylogs", ",", 
+      RowBox[{"_", "?", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"polyLogWeight", "[", "#", "]"}], "==", "weight"}], " ", 
+         "&"}], ")"}]}]}], "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "checkEquality", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "In", " ", "principle", " ", "checks", " ", "if", " ", "two", " ", 
+      "expressions", " ", "are", " ", "equal"}], ",", " ", 
+     RowBox[{"but", " ", 
+      RowBox[{"doesn", "'"}], "t", " ", "seem", " ", "to", " ", "be", " ", 
+      "very", " ", "good", " ", "at", " ", "it"}]}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"checkEquality", "[", 
+     RowBox[{"expr1_", ",", "expr2_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"variables", ",", "primes", ",", "substitutionRules"}], "}"}], 
+      ",", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"variables", " ", "=", " ", 
         RowBox[{"{", 
@@ -62,864 +894,24 @@ Cell[BoxData[{
        RowBox[{"substitutionRules", " ", "=", " ", 
         RowBox[{"Thread", "[", 
          RowBox[{"variables", " ", "->", "primes"}], "]"}]}], ";", 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{
-         RowBox[{"If", " ", "the", " ", "list", " ", 
-          RowBox[{"doesn", "'"}], "t", " ", "already", " ", "contain", " ", 
-          "Pi"}], ",", " ", 
-         RowBox[{
-         "add", " ", "that", " ", "in", " ", "as", " ", "an", " ", "option", 
-          " ", "for", " ", "FindIntegerNullVector", " ", "to", " ", "play", 
-          " ", "with"}]}], "*)"}], "\[IndentingNewLine]", 
-       RowBox[{"If", "[", 
-        RowBox[{
-         RowBox[{"MemberQ", "[", 
-          RowBox[{"logs", ",", "Pi"}], "]"}], ",", 
-         RowBox[{"alteredList", " ", "=", " ", "logs"}], ",", 
-         RowBox[{
-          RowBox[{"alteredList", "=", " ", 
-           RowBox[{"logs", "//", 
-            RowBox[{"Append", "[", 
-             RowBox[{"I", " ", "Pi"}], "]"}]}]}], ";"}]}], "]"}], ";", 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{
-        "Try", " ", "to", " ", "find", " ", "an", " ", "integer", " ", "null",
-          " ", "vector", " ", "with", " ", "norm", " ", "less", " ", "than", 
-         " ", "40"}], "*)"}], "\[IndentingNewLine]", 
-       RowBox[{"coefficients", "=", 
-        RowBox[{"Check", "[", 
-         RowBox[{
-          RowBox[{"FindIntegerNullVector", "[", 
-           RowBox[{
-            RowBox[{"N", "[", 
-             RowBox[{"alteredList", "/.", " ", "substitutionRules"}], "]"}], 
-            ",", "40"}], "]"}], ",", "False"}], "]"}]}], ";", 
        "\[IndentingNewLine]", 
-       RowBox[{"norm", " ", "=", " ", 
-        RowBox[{"coefficients", ".", 
-         RowBox[{"Conjugate", "[", "coefficients", "]"}]}]}], ";", 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
-       RowBox[{"If", "[", 
-        RowBox[{
-         RowBox[{"norm", " ", ">", " ", "40"}], ",", " ", 
-         RowBox[{"coefficients", " ", "=", " ", "False"}]}], "]"}], ";", 
-       "\[IndentingNewLine]", 
-       RowBox[{"If", "[", 
-        RowBox[{
-         RowBox[{"coefficients", "===", "False"}], ",", 
-         RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";", 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{
-        "Generate", " ", "the", " ", "logarithm", " ", "rule", " ", "from", 
-         " ", "the", " ", "coefficient", " ", "list"}], "*)"}], 
-       "\[IndentingNewLine]", 
-       RowBox[{"identity", " ", "=", " ", 
-        RowBox[{"ruleFromCoefficients", "[", 
-         RowBox[{"coefficients", ",", "alteredList"}], "]"}]}], ";", 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{
+       RowBox[{"sub1", " ", "=", " ", 
+        RowBox[{"N", "[", 
          RowBox[{
-         "If", " ", "the", " ", "identity", " ", "is", " ", "trivial"}], ",", 
-         " ", 
+          RowBox[{"expr1", " ", "/.", "substitutionRules"}], ",", "100"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"sub2", " ", "=", " ", 
+        RowBox[{"N", "[", 
          RowBox[{
-          RowBox[{"i", ".", "e", ".", " ", "a"}], "->", "a"}], ",", " ", 
-         RowBox[{"return", " ", "False"}]}], "*)"}], "\[IndentingNewLine]", 
-       RowBox[{"If", "[", 
+          RowBox[{"expr2", " ", "/.", "substitutionRules"}], ",", "100"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Chop", "[", 
         RowBox[{
-         RowBox[{
-          RowBox[{"removeTrivialIdentities", "[", 
-           RowBox[{"{", "identity", "}"}], "]"}], "===", 
-          RowBox[{"{", "}"}]}], ",", 
-         RowBox[{
-          RowBox[{"Print", "[", "\"\<Trivial identity\>\"", "]"}], ";", 
-          RowBox[{"Return", "[", "False", "]"}]}]}], "]"}], ";", 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{
-         RowBox[{
-         "Last", " ", "double", " ", "check", " ", "that", " ", "the", " ", 
-          "identity", " ", "is", " ", "in", " ", "fact", " ", "valid"}], ",", 
-         " ", 
-         RowBox[{
-         "this", " ", "time", " ", "with", " ", "different", " ", 
-          "primes"}]}], "*)"}], "\[IndentingNewLine]", 
-       RowBox[{"If", "[", 
-        RowBox[{
-         RowBox[{"verifyRule", "[", "identity", "]"}], ",", 
-         RowBox[{"Return", "[", "identity", "]"}], ",", 
-         RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";"}]}], 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ClearAll", "[", "verifyRule", "]"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{
-     RowBox[{
-     "Verifies", " ", "if", " ", "a", " ", "rule", " ", "is", " ", "correct", 
-      " ", 
-      RowBox[{
-       RowBox[{"(", 
-        RowBox[{
-         RowBox[{"IN", " ", "THE", " ", "VARIABLES", " ", "u1"}], ",", " ", 
-         "u2", ",", "u3"}], ")"}], ".", " ", "For"}], " ", "example", " ", 
-      RowBox[{"Log", "[", 
-       RowBox[{"2", "u1"}], "]"}]}], "->", " ", 
-     RowBox[{
-      RowBox[{"Log", "[", "2", "]"}], "+", 
-      RowBox[{
-       RowBox[{"Log", "[", "u1", "]"}], " ", "returns", " ", "True"}]}]}], 
-    ",", " ", 
-    RowBox[{
-     RowBox[{"but", " ", 
-      RowBox[{"Log", "[", "u2", "]"}]}], "->", 
-     RowBox[{
-      RowBox[{"Log", "[", "u1", "]"}], " ", "returns", " ", "False"}]}]}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"verifyRule", "[", "rule_", "]"}], ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-      "variables", ",", "primes", ",", "substitutionRules", ",", 
-       "substitutedRule"}], "}"}], ",", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{
-      "Generate", " ", "rules", " ", "to", " ", "randomly", " ", "assign", 
-       " ", "values", " ", "to", " ", "the", " ", "lgoarithms"}], "*)"}], 
-     "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"variables", " ", "=", " ", 
-       RowBox[{"{", 
-        RowBox[{"u1", ",", "u2", ",", "u3"}], "}"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"primes", " ", "=", " ", 
-       RowBox[{"Map", "[", 
-        RowBox[{"Prime", ",", 
-         RowBox[{"RandomSample", "[", 
-          RowBox[{
-           RowBox[{"Range", "[", 
-            RowBox[{"100", ",", "200"}], "]"}], ",", "3"}], "]"}]}], "]"}]}], 
-      ";", "\[IndentingNewLine]", 
-      RowBox[{"substitutionRules", " ", "=", " ", 
-       RowBox[{"Thread", "[", 
-        RowBox[{"variables", " ", "->", "primes"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"(*", 
-       RowBox[{
-       "Substitute", " ", "random", " ", "values", " ", "into", " ", "the", 
-        " ", "rule", " ", "to", " ", "check"}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"substitutedRule", " ", "=", " ", 
-       RowBox[{"N", "[", 
-        RowBox[{"rule", "/.", "substitutionRules"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"(*", 
-       RowBox[{
-       "Check", " ", "the", " ", "LHS", " ", "and", " ", "RHS", " ", "are", 
-        " ", "the", " ", "same"}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Chop", "[", 
-          RowBox[{
-           RowBox[{"Keys", "[", "substitutedRule", "]"}], "-", 
-           RowBox[{"Values", "[", "substitutedRule", "]"}]}], "]"}], "==", 
-         "0"}], ",", "True", ",", "False"}], "]"}]}]}], "\[IndentingNewLine]",
-     "]"}]}], "\[IndentingNewLine]", 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ClearAll", "[", "ruleFromCoefficients", "]"}], 
-  "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{
-    "Given", " ", "a", " ", "list", " ", "of", " ", "logarithms", " ", "and", 
-     " ", "coefficients"}], ",", " ", 
-    RowBox[{
-    "found", " ", "by", " ", "FindIntegerNullVector", " ", "that", " ", 
-     "encode", " ", "a", " ", "relation", " ", "between", " ", "the", " ", 
-     "logarithms"}], ",", " ", 
-    RowBox[{
-     RowBox[{"generate", " ", "a", " ", "rule", " ", "a"}], "->", 
-     RowBox[{
-     "b", " ", "that", " ", "sends", " ", "the", " ", "most", " ", 
-      "complicated", " ", "part", " ", "of", " ", "logarithms", " ", "to", 
-      " ", "a", " ", "simplification", " ", "given", " ", "by", " ", "the", 
-      " ", 
-      RowBox[{"coefficients", ".", " ", "\"\<complicated\>\""}], " ", "is", 
-      " ", "given", " ", "here", " ", "by", " ", "the", " ", 
-      "LeafCount"}]}]}], "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ruleFromCoefficients", "[", 
-    RowBox[{"coefficients_", ",", " ", "logs_"}], "]"}], ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-      "leafCounts", ",", "leafCountOrdering", ",", "largestLeafCountIndex", 
-       ",", "rule", ",", "normalizedCoefficients"}], "}"}], ",", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"leafCounts", " ", "=", " ", 
-       RowBox[{"Map", "[", 
-        RowBox[{"LeafCount", ",", "logs"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"leafCountOrdering", " ", "=", "  ", 
-       RowBox[{"Ordering", "[", "leafCounts", "]"}]}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"(*", 
-       RowBox[{
-        RowBox[{
-        "This", " ", "is", " ", "the", " ", "index", " ", "of", " ", "the", 
-         " ", "element", " ", "of", " ", "logs", " ", "with", " ", "the", " ",
-          "largest", " ", "leaf", " ", "count", " ", "that", " ", "still", 
-         " ", "has", " ", "a", " ", "non"}], "-", 
-        RowBox[{
-        "zero", " ", "corresponding", " ", "element", " ", "in", " ", 
-         "coefficients"}]}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"largestLeafCountIndex", "=", 
-       RowBox[{"Last", "[", 
-        RowBox[{"Select", "[", 
-         RowBox[{"leafCountOrdering", ",", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"coefficients", "[", 
-             RowBox[{"[", "#", "]"}], "]"}], "=!=", "0"}], "&"}]}], "]"}], 
-        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"normalizedCoefficients", " ", "=", " ", 
-       RowBox[{"coefficients", "/", 
-        RowBox[{"coefficients", "[", 
-         RowBox[{"[", "largestLeafCountIndex", "]"}], "]"}]}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"rule", " ", "=", " ", 
-       RowBox[{
-        RowBox[{"logs", "[", 
-         RowBox[{"[", "largestLeafCountIndex", "]"}], "]"}], "->", 
-        RowBox[{"-", 
-         RowBox[{
-          RowBox[{"Drop", "[", 
-           RowBox[{"logs", ",", 
-            RowBox[{"{", "largestLeafCountIndex", "}"}]}], "]"}], ".", 
-          RowBox[{"Drop", "[", 
-           RowBox[{"normalizedCoefficients", ",", 
-            RowBox[{"{", "largestLeafCountIndex", "}"}]}], "]"}]}]}]}]}], ";",
-       "\[IndentingNewLine]", "rule"}]}], "\[IndentingNewLine]", "]"}]}], 
-  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ClearAll", "[", "seperateLogsByWeight", "]"}], 
-  "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{"Given", " ", "a", " ", "list", " ", "of", " ", "Logs"}], ",", 
-    " ", 
-    RowBox[{
-     RowBox[{"returns", " ", "a", " ", "nested", " ", 
-      RowBox[{"list", ".", " ", "The"}], " ", "nth", " ", "entry", " ", 
-      "contains", " ", "a", " ", "list", " ", "of", " ", "all", " ", "weight",
-       " ", "n", " ", "polylogs", " ", "present", " ", "in", " ", "the", " ", 
-      "initial", " ", 
-      RowBox[{"list", ".", " ", "For"}], " ", 
-      RowBox[{"example", ":", "\[IndentingNewLine]", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"Log", "[", "z", "]"}], ",", 
-         RowBox[{
-          RowBox[{"Log", "[", "z", "]"}], "^", "2"}], ",", 
-         RowBox[{
-          RowBox[{"Log", "[", "w", "]"}], 
-          RowBox[{"Log", "[", "z", "]"}]}]}], "}"}]}]}], "->", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{
-        RowBox[{"{", 
-         RowBox[{"Log", "[", "z", "]"}], "}"}], ",", 
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"Log", "[", "z", "]"}], "^", "2"}], ",", 
-          RowBox[{
-           RowBox[{"Log", "[", "w", "]"}], 
-           RowBox[{"Log", "[", "z", "]"}]}]}], "}"}]}], "}"}], 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"WARNING", ".", " ", "This"}], " ", "will", " ", "run", " ", 
-      "into", " ", "problems", " ", "if"}]}], ",", " ", 
-    RowBox[{"for", " ", "example"}], ",", " ", 
-    RowBox[{"there", " ", "are", " ", "weight", " ", "1"}], ",", " ", 
-    RowBox[{"and", " ", "weight", " ", "3", " ", "polylogs"}], ",", " ", 
-    RowBox[{"but", " ", "no", " ", "weight", " ", "2", " ", 
-     RowBox[{"logs", ".", " ", "It"}], " ", "will", " ", "stop", " ", 
-     "checking", " ", "after", " ", "it", " ", "fails", " ", "to", " ", 
-     "find", " ", "any", " ", "at", " ", "weight", " ", "2"}]}], 
-   "\[IndentingNewLine]", "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"seperateLogsByWeight", "[", "logs_List", "]"}], " ", ":=", " ", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"logsSeperatedbyWeight", ",", "weight", ",", "current"}], "}"}],
-      ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"logsSeperatedbyWeight", " ", "=", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"weight", " ", "=", " ", "1"}], ";", " ", 
-      RowBox[{"(*", 
-       RowBox[{"Incrementing", " ", "counter"}], "*)"}], 
-      "\[IndentingNewLine]", 
-      RowBox[{"current", " ", "=", " ", 
-       RowBox[{"onlyThisPolyLogWeight", "[", 
-        RowBox[{"logs", ",", "weight"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"(*", 
-       RowBox[{"Loop", " ", "th"}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"While", "[", 
-       RowBox[{
-        RowBox[{"current", "=!=", 
-         RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"AppendTo", "[", 
-          RowBox[{"logsSeperatedbyWeight", ",", "current"}], "]"}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{"weight", "++"}], ";", "\[IndentingNewLine]", 
-         RowBox[{"current", " ", "=", " ", 
-          RowBox[{"onlyThisPolyLogWeight", "[", 
-           RowBox[{"logs", ",", "weight"}], "]"}]}], ";"}]}], 
-       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{"Not", "[", 
-         RowBox[{"ContainsExactly", "[", 
-          RowBox[{
-           RowBox[{"Flatten", "[", "logsSeperatedbyWeight", "]"}], ",", 
-           "logs"}], "]"}], "]"}], ",", 
-        RowBox[{
-        "Print", "[", 
-         "\"\<ERROR, the Log seperation by weight has failed. Maybe there are \
-not copies of polylogs of every weight up to the max weight (i.e. \
-1,2,3,missing 4,5) in which case it will stop at 3\>\"", "]"}]}], "]"}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      "logsSeperatedbyWeight"}]}], "\[IndentingNewLine]", "]"}]}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ClearAll", "[", "findIdentities", "]"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{"Takes", " ", "in", " ", "an", " ", "expression"}], ",", " ", 
-    RowBox[{
-    "and", " ", "loops", " ", "over", " ", "various", " ", "weights", " ", 
-     "to", " ", "try", " ", "and", " ", "find", " ", "identities", " ", 
-     "between", " ", "the", " ", "lgoarithms", " ", "in", " ", "the", " ", 
-     "expression"}]}], "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"findIdentities", "[", 
-    RowBox[{"expr_", ",", 
-     RowBox[{"LHSQ_", ":", "True"}]}], "]"}], ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-      "identities", ",", "logs", ",", "tempexpr", ",", "failures", ",", 
-       "logsSeperatedbyWeight", ",", "maxWeight", ",", "identity", ",", 
-       "weightLogList", ",", "maximumLength", ",", "maxFailures"}], "}"}], 
-     ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"tempexpr", " ", "=", " ", "expr"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"identities", " ", "=", " ", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{"Style", "[", 
-        RowBox[{"\"\<Finding Log Identities\>\"", ",", "Bold"}], "]"}], "]"}],
-       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"(*", 
-       RowBox[{
-       "Acquire", " ", "the", " ", "vectors", " ", "to", " ", "play", " ", 
-        "with", " ", "from", " ", "either", " ", "the", " ", "LHS", " ", "or",
-         " ", "RHS"}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{"LHSQ", ",", 
-        RowBox[{
-         RowBox[{"logs", " ", "=", " ", 
-          RowBox[{"DeleteDuplicates", "[", 
-           RowBox[{"getLHS", "[", "expr", "]"}], "]"}]}], ";"}], ",", " ", 
-        RowBox[{
-         RowBox[{"logs", " ", "=", " ", 
-          RowBox[{"DeleteDuplicates", "[", 
-           RowBox[{"getRHS", "[", "expr", "]"}], "]"}]}], ";"}]}], "]"}], ";",
-       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"logsSeperatedbyWeight", " ", "=", " ", 
-       RowBox[{"seperateLogsByWeight", "[", "logs", "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"maxWeight", " ", "=", " ", 
-       RowBox[{"Length", "[", "logsSeperatedbyWeight", "]"}]}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{
-       "\"\<The maximum weight in your expression is : \>\"", ",", " ", 
-        "maxWeight"}], "]"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{"\"\<The number of terms of each weight is : \>\"", ",", 
-        RowBox[{"Map", "[", 
-         RowBox[{"Length", ",", "logsSeperatedbyWeight"}], "]"}]}], " ", 
-       "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"(*", 
-       RowBox[{
-        RowBox[{"Loop", " ", "through", " ", "each", " ", "weight"}], ",", 
-        " ", 
-        RowBox[{
-        "and", " ", "try", " ", "various", " ", "methods", " ", "for", " ", 
-         "finding", " ", "identites"}]}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"maximumLength", " ", "=", " ", "100"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"Do", "[", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"weightLogList", " ", "=", " ", 
-          RowBox[{"logsSeperatedbyWeight", "[", 
-           RowBox[{"[", "weight", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-         
-         RowBox[{"Print", "[", 
-          RowBox[{"Style", "[", 
-           RowBox[{
-            RowBox[{"Row", "[", 
-             RowBox[{"{", 
-              RowBox[{
-              "\"\<Finding Identities at weight \>\"", ",", " ", "weight"}], 
-              "}"}], "]"}], ",", "Bold"}], "]"}], "]"}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{"While", "[", 
-          RowBox[{"True", ",", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"failures", " ", "=", " ", "0"}], ";", 
-            "\[IndentingNewLine]", 
-            RowBox[{"If", "[", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"Length", "[", "weightLogList", "]"}], "<", 
-               "maximumLength"}], ",", "\[IndentingNewLine]", 
-              RowBox[{"(*", 
-               RowBox[{
-                RowBox[{"If", " ", "True"}], "..."}], "*)"}], 
-              "\[IndentingNewLine]", "\[IndentingNewLine]", 
-              RowBox[{"While", "[", 
-               RowBox[{
-                RowBox[{"failures", "<", "5"}], ",", "\[IndentingNewLine]", 
-                RowBox[{
-                 RowBox[{"identity", " ", "=", " ", 
-                  RowBox[{"findAnIdentity", "[", "weightLogList", "]"}]}], 
-                 ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-                 RowBox[{"If", "[", 
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"identity", " ", "===", " ", "False"}], " ", "||",
-                     " ", 
-                    RowBox[{"MemberQ", "[", 
-                    RowBox[{"identities", ",", "identity"}], "]"}]}], ",", 
-                   "\[IndentingNewLine]", 
-                   RowBox[{
-                    RowBox[{"failures", " ", "++"}], ";"}], ",", 
-                   "\[IndentingNewLine]", 
-                   RowBox[{
-                    RowBox[{"Break", "[", "]"}], ";"}]}], "]"}]}]}], "]"}], 
-              "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
-              RowBox[{"(*", 
-               RowBox[{"Else", "..."}], "*)"}], "\[IndentingNewLine]", 
-              RowBox[{
-               RowBox[{"maxFailures", " ", "=", " ", "10"}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"While", "[", 
-                RowBox[{
-                 RowBox[{"failures", "<", "maxFailures"}], ",", 
-                 "\[IndentingNewLine]", "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{"Print", "[", 
-                   RowBox[{
-                   "\"\<The size of the list at this weight is too large \
-(\>\"", "<>", " ", 
-                    RowBox[{"ToString", "[", 
-                    RowBox[{"Length", "[", "weightLogList", "]"}], "]"}], "<>",
-                     " ", "\"\<). Instead, choosing 100 terms at random. \
-Attempt \>\"", "<>", " ", 
-                    RowBox[{"ToString", "[", 
-                    RowBox[{"(", 
-                    RowBox[{"failures", "+", "1"}], ")"}], "]"}], " ", "<>", 
-                    " ", "\"\</\>\"", " ", "<>", " ", 
-                    RowBox[{"ToString", "[", "maxFailures", "]"}], " ", "<>", 
-                    " ", "\"\<.\>\""}], "]"}], ";", "\[IndentingNewLine]", 
-                  RowBox[{"identity", " ", "=", " ", 
-                   RowBox[{"findAnIdentity", "[", 
-                    RowBox[{"RandomSample", "[", 
-                    RowBox[{"weightLogList", ",", "100"}], "]"}], "]"}]}], 
-                  ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-                  RowBox[{"If", "[", 
-                   RowBox[{
-                    RowBox[{"identity", " ", "===", " ", "False"}], ",", 
-                    "\[IndentingNewLine]", 
-                    RowBox[{
-                    RowBox[{"failures", " ", "++"}], ";"}], 
-                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
-                    RowBox[{
-                    RowBox[{"Break", "[", "]"}], ";"}]}], "]"}]}]}], 
-                "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
-             "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-            RowBox[{"If", "[", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"identity", " ", "===", " ", "False"}], "||", 
-               RowBox[{"MemberQ", "[", 
-                RowBox[{"identities", ",", "identity"}], "]"}]}], ",", 
-              RowBox[{"Break", "[", "]"}], ",", 
-              RowBox[{"AppendTo", "[", 
-               RowBox[{"identities", ",", "identity"}], "]"}]}], "]"}], ";", 
-            "\[IndentingNewLine]", 
-            RowBox[{"Print", "[", "identity", "]"}], ";"}]}], 
-          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", " ", 
-         "\[IndentingNewLine]", 
-         RowBox[{"Print", "[", 
-          RowBox[{"\"\<Current number of identities: \>\"", ",", " ", 
-           RowBox[{"Length", "[", "identities", "]"}]}], "]"}], ";"}], 
-        "\[IndentingNewLine]", 
-        RowBox[{"(*", 
-         RowBox[{
-          RowBox[{"Print", "[", 
-           RowBox[{"\"\<Current Identities: \>\"", ",", "identities"}], "]"}],
-           ";"}], "*)"}], "\[IndentingNewLine]", ",", 
-        RowBox[{"{", 
-         RowBox[{"weight", ",", 
-          RowBox[{"Length", "[", "logsSeperatedbyWeight", "]"}]}], "}"}]}], 
-       "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      "identities"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]",
-   "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{
-    "Takes", " ", "a", " ", "list", " ", "of", " ", "identities", " ", "and", 
-     " ", "removes", " ", "any", " ", "of", " ", "the", " ", "form", " ", 
-     "a_"}], " ", "->", " ", "a_"}], " ", "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"removeTrivialIdentities", "[", "rules_List", "]"}], ":=", 
-   RowBox[{"Select", "[", 
-    RowBox[{"rules", ",", 
-     RowBox[{
-      RowBox[{
-       RowBox[{"#", "[", 
-        RowBox[{"[", "1", "]"}], "]"}], "=!=", 
-       RowBox[{"#", "[", 
-        RowBox[{"[", "2", "]"}], "]"}]}], "&"}]}], "]"}]}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ClearAll", "[", "beatOutLogIdentities", "]"}], 
-  "\[IndentingNewLine]", 
-  RowBox[{"(*", " ", 
-   RowBox[{
-    RowBox[{"Recursively", " ", "finds", " ", "identities"}], ",", " ", 
-    RowBox[{"applies", " ", "them"}], ",", " ", 
-    RowBox[{
-    "and", " ", "then", " ", "finds", " ", "more", " ", "identities", " ", 
-     "to", " ", "\"\<beat out\>\"", " ", "the", " ", "log", " ", "identities",
-      " ", "from", " ", "an", " ", 
-     RowBox[{"expression", ".", " ", "Repeats"}], " ", "until", " ", 
-     RowBox[{"(", 
-      RowBox[{"default", " ", "value", " ", "of"}], ")"}], " ", "5", " ", 
-     "cycles", " ", "have", " ", "taken", " ", 
-     RowBox[{"place", ".", " ", "Takes"}], " ", "a", " ", "long", " ", "time",
-      " ", "to", " ", "run", " ", "and", " ", "produces", " ", "a", " ", 
-     "lot", " ", "of", " ", 
-     RowBox[{"output", ".", " ", "Returns"}], " ", "a", " ", "list", " ", 
-     "of", " ", "all", " ", "the", " ", "identities", " ", "it", " ", "has", 
-     " ", "found", " ", "and", " ", "the", " ", "\"\<beaten\>\"", " ", 
-     "expression"}]}], "*)"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"beatOutLogIdentities", "[", 
-    RowBox[{"expr_", ",", 
-     RowBox[{"nmax_", ":", "5"}]}], "]"}], ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-      "omniIdentities", ",", "workingExpr", ",", "lhsidentities", ",", 
-       "rhsidentities", ",", "identities", ",", "counter"}], "}"}], ",", 
-     "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{
-      "Print", "[", 
-       "\"\<Finding Log identies in the variables u1, u2, u3\>\"", "]"}], ";",
-       "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{"\"\<Number of terms in your expression : \>\"", ",", 
-        RowBox[{"Length", "[", 
-         RowBox[{"getLHS", "[", "expr", "]"}], "]"}]}], "]"}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"omniIdentities", " ", "=", " ", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"counter", " ", "=", " ", "1"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"workingExpr", " ", "=", " ", "expr"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"While", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{
-          RowBox[{"Length", "[", "identities", "]"}], " ", ">", " ", "1"}], 
-         " ", "||", " ", 
-         RowBox[{"counter", " ", "<", "nmax"}]}], ",", "\[IndentingNewLine]", 
-        
-        RowBox[{
-         RowBox[{"Print", "[", 
-          RowBox[{"Style", "[", 
-           RowBox[{
-            RowBox[{"Row", "[", 
-             RowBox[{"{", 
-              RowBox[{
-              "\"\<FINDING IDENTITIES FOR THE \>\"", ",", " ", "counter", 
-               ",", "\"\< TIMES\>\""}], "}"}], "]"}], ",", "Bold"}], "]"}], 
-          "]"}], ";", "\[IndentingNewLine]", 
-         RowBox[{"lhsidentities", " ", "=", " ", 
-          RowBox[{"findIdentities", "[", 
-           RowBox[{"workingExpr", ",", "True"}], "]"}]}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{"rhsidentities", " ", "=", " ", 
-          RowBox[{"findIdentities", "[", 
-           RowBox[{"workingExpr", ",", "False"}], "]"}]}], ";", 
-         "\[IndentingNewLine]", "\[IndentingNewLine]", 
-         RowBox[{"Print", "[", "\"\<------------\>\"", "]"}], ";", 
-         "\[IndentingNewLine]", "\[IndentingNewLine]", 
-         RowBox[{"If", "[", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"(", 
-             RowBox[{"workingExpr", "//.", "lhsidentities"}], ")"}], " ", "===",
-             "workingExpr"}], ",", 
-           RowBox[{
-           "Print", "[", 
-            "\"\<WARNING, the LHS identities haven't done anything to the \
-expression\>\"", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
-         RowBox[{"If", "[", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"(", 
-             RowBox[{"workingExpr", "//.", "rhsidentities"}], ")"}], " ", "===",
-             "workingExpr"}], ",", 
-           RowBox[{
-           "Print", "[", 
-            "\"\<WARNING, the RHS identities haven't done anything to the \
-expression\>\"", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
-         "\[IndentingNewLine]", 
-         RowBox[{"identities", " ", "=", " ", 
-          RowBox[{"Union", "[", 
-           RowBox[{"lhsidentities", ",", "rhsidentities"}], "]"}]}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{"workingExpr", " ", "=", "  ", 
-          RowBox[{"workingExpr", "//.", "identities"}]}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{"workingExpr", " ", "=", " ", 
-          RowBox[{"fullExpandT", "[", "workingExpr", "]"}]}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{"omniIdentities", " ", "=", " ", 
-          RowBox[{"Union", "[", 
-           RowBox[{"omniIdentities", ",", "identities"}], "]"}]}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{"counter", " ", "++"}], ";"}]}], "\[IndentingNewLine]", 
-       "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{"Style", "[", 
-        RowBox[{"\"\<Complete\>\"", ",", "Bold"}], "]"}], "]"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{"\"\<Log separations by weight are: \>\"", ",", " ", 
-        RowBox[{"Map", "[", 
-         RowBox[{"Length", ",", 
-          RowBox[{"seperateLogsByWeight", "[", 
-           RowBox[{"DeleteDuplicates", "[", 
-            RowBox[{"getLHS", "[", "workingExpr", "]"}], "]"}], "]"}]}], 
-         "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{"\"\<Length of expression: \>\"", ",", 
-        RowBox[{"Length", "[", 
-         RowBox[{"getLHS", "[", "workingExpr", "]"}], "]"}]}], "]"}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"{", 
-       RowBox[{"workingExpr", ",", "omniIdentities"}], "}"}]}]}], 
-    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ClearAll", "[", "polyLogWeight", "]"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{"Returns", " ", "the", " ", "weight", " ", "of", " ", "a", " ", 
-    RowBox[{"polylogarithm", ".", " ", "Does"}], " ", "not", " ", "work", " ",
-     "on", " ", "sums", " ", "of", " ", "functions"}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"polyLogWeight", "[", "expr_", "]"}], ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-      "alteredExpression", ",", "piTerms", ",", "logTerms", ",", 
-       "polyLogTerms", ",", "logWeight"}], "}"}], ",", 
-     RowBox[{"(*", 
-      RowBox[{
-      "Extract", " ", "logarithmic", " ", "and", " ", "polylogarithmic", " ", 
-       "terms"}], "*)"}], "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Head", "[", "expr", "]"}], "==", "Plus"}], ",", 
-        RowBox[{
-        "Print", "[", 
-         "\"\<WARNING, trying to compute polylog weight of a sum\>\"", 
-         "]"}]}], "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Head", "[", "expr", "]"}], "=!=", "Times"}], ",", 
-        "\[IndentingNewLine]", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"piTerms", " ", "=", " ", 
-          RowBox[{"Cases", "[", 
-           RowBox[{"expr", ",", 
-            RowBox[{
-             RowBox[{"Pi", "^", "k_."}], " ", ":>", "k"}], ",", 
-            RowBox[{"{", "0", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-         RowBox[{"logTerms", "=", 
-          RowBox[{"Cases", "[", 
-           RowBox[{"expr", ",", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"Log", "[", "_", "]"}], "^", "k_."}], ":>", "k"}], ",", 
-            
-            RowBox[{"{", "0", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-         RowBox[{"polyLogTerms", "=", 
-          RowBox[{"Cases", "[", 
-           RowBox[{"expr", ",", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"PolyLog", "[", 
-               RowBox[{"n_", ",", "_"}], "]"}], "^", "k_."}], ":>", 
-             RowBox[{"n", " ", "k"}]}], ",", 
-            RowBox[{"{", "0", "}"}]}], "]"}]}], ";"}], ",", 
-        "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"piTerms", " ", "=", " ", 
-          RowBox[{"Cases", "[", 
-           RowBox[{"expr", ",", 
-            RowBox[{
-             RowBox[{"Pi", "^", "k_."}], " ", ":>", "k"}], ",", 
-            RowBox[{"{", "1", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-         RowBox[{"logTerms", "=", 
-          RowBox[{"Cases", "[", 
-           RowBox[{"expr", ",", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"Log", "[", "_", "]"}], "^", "k_."}], ":>", "k"}], ",", 
-            
-            RowBox[{"{", "1", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-         RowBox[{"polyLogTerms", "=", 
-          RowBox[{"Cases", "[", 
-           RowBox[{"expr", ",", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"PolyLog", "[", 
-               RowBox[{"n_", ",", "_"}], "]"}], "^", "k_."}], ":>", 
-             RowBox[{"n", " ", "k"}]}], ",", 
-            RowBox[{"{", "1", "}"}]}], "]"}]}], ";"}]}], 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"logWeight", "=", " ", 
-       RowBox[{
-        RowBox[{"Total", "[", "piTerms", "]"}], "+", 
-        RowBox[{"Total", "[", "logTerms", "]"}], "+", 
-        RowBox[{"Total", "[", "polyLogTerms", "]"}]}]}], ";", 
-      "\[IndentingNewLine]", "logWeight"}]}], "\[IndentingNewLine]", "]"}]}], 
-  "\[IndentingNewLine]", "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-   "Returns", " ", "a", " ", "subset", " ", "of", " ", "a", " ", "list", " ", 
-    "of", " ", "polylogarithms", " ", "with", " ", "given", " ", "weight"}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{"ClearAll", "[", "onlyThisPolyLogWeight", 
-  "]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"onlyThisPolyLogWeight", "[", 
-    RowBox[{"polylogs_List", ",", "weight_"}], "]"}], " ", ":=", 
-   RowBox[{"Cases", "[", 
-    RowBox[{"polylogs", ",", 
-     RowBox[{"_", "?", 
-      RowBox[{"(", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"polyLogWeight", "[", "#", "]"}], "==", "weight"}], " ", 
-        "&"}], ")"}]}]}], "]"}]}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ClearAll", "[", "checkEquality", "]"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{
-    "In", " ", "principle", " ", "checks", " ", "if", " ", "two", " ", 
-     "expressions", " ", "are", " ", "equal"}], ",", " ", 
-    RowBox[{"but", " ", 
-     RowBox[{"doesn", "'"}], "t", " ", "seem", " ", "to", " ", "be", " ", 
-     "very", " ", "good", " ", "at", " ", "it"}]}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"checkEquality", "[", 
-   RowBox[{"expr1_", ",", "expr2_"}], "]"}], ":=", 
-  RowBox[{"Module", "[", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"variables", ",", "primes", ",", "substitutionRules"}], "}"}], 
-    ",", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"variables", " ", "=", " ", 
-      RowBox[{"{", 
-       RowBox[{"u1", ",", "u2", ",", "u3"}], "}"}]}], ";", 
-     "\[IndentingNewLine]", 
-     RowBox[{"primes", " ", "=", " ", 
-      RowBox[{"Map", "[", 
-       RowBox[{"Prime", ",", 
-        RowBox[{"RandomSample", "[", 
-         RowBox[{
-          RowBox[{"Range", "[", 
-           RowBox[{"20", ",", "100"}], "]"}], ",", "3"}], "]"}]}], "]"}]}], 
-     ";", "\[IndentingNewLine]", 
-     RowBox[{"substitutionRules", " ", "=", " ", 
-      RowBox[{"Thread", "[", 
-       RowBox[{"variables", " ", "->", "primes"}], "]"}]}], ";", 
-     "\[IndentingNewLine]", 
-     RowBox[{"sub1", " ", "=", " ", 
-      RowBox[{"N", "[", 
-       RowBox[{
-        RowBox[{"expr1", " ", "/.", "substitutionRules"}], ",", "100"}], 
-       "]"}]}], ";", "\[IndentingNewLine]", 
-     RowBox[{"sub2", " ", "=", " ", 
-      RowBox[{"N", "[", 
-       RowBox[{
-        RowBox[{"expr2", " ", "/.", "substitutionRules"}], ",", "100"}], 
-       "]"}]}], ";", "\[IndentingNewLine]", 
-     RowBox[{"Chop", "[", 
-      RowBox[{
-       RowBox[{"Total", "[", 
-        RowBox[{"getLHS", "[", "sub1", "]"}], "]"}], "-", 
-       RowBox[{"Total", "[", 
-        RowBox[{"getLHS", "[", "sub2", "]"}], "]"}]}], "]"}]}]}], 
-   "\[IndentingNewLine]", "]"}]}]}], "Input",
+         RowBox[{"Total", "[", 
+          RowBox[{"getLHS", "[", "sub1", "]"}], "]"}], "-", 
+         RowBox[{"Total", "[", 
+          RowBox[{"getLHS", "[", "sub2", "]"}], "]"}]}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}]}]}]], "Input",
  CellChangeTimes->{{3.9306369360629683`*^9, 3.930636965908185*^9}, {
    3.930637008792017*^9, 3.930637083278833*^9}, {3.930637176476653*^9, 
    3.930637177168074*^9}, {3.930637251086856*^9, 3.9306372636738043`*^9}, {
@@ -1072,8 +1064,9 @@ expression\>\"", "]"}]}], "]"}], ";", "\[IndentingNewLine]",
    3.931258048907991*^9}, {3.931258093183467*^9, 3.931258116506415*^9}, {
    3.9312581507414503`*^9, 3.931258176163459*^9}, 3.931258269143824*^9, {
    3.931258354236163*^9, 3.931258365633204*^9}, {3.931258397171648*^9, 
-   3.931258422643538*^9}, {3.931258477285501*^9, 
-   3.9312585063127613`*^9}},ExpressionUUID->"3a9a1c26-9c35-44c5-89df-\
+   3.931258422643538*^9}, {3.931258477285501*^9, 3.931258506312761*^9}, {
+   3.93133159752494*^9, 
+   3.931331630928052*^9}},ExpressionUUID->"3a9a1c26-9c35-44c5-89df-\
 dd7b3745f89a"],
 
 Cell[BoxData[""], "Input",
@@ -1098,8 +1091,8 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[400, 13, 50581, 1063, 5848, "Input",ExpressionUUID->"3a9a1c26-9c35-44c5-89df-dd7b3745f89a"],
-Cell[50984, 1078, 175, 3, 30, "Input",ExpressionUUID->"2c0ba082-9776-4686-871a-6873501d2ff0"]
+Cell[400, 13, 51558, 1056, 5890, "Input",ExpressionUUID->"3a9a1c26-9c35-44c5-89df-dd7b3745f89a"],
+Cell[51961, 1071, 175, 3, 30, "Input",ExpressionUUID->"2c0ba082-9776-4686-871a-6873501d2ff0"]
 }
 ]
 *)

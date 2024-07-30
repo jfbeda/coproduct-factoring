@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     44796,       1058]
-NotebookOptionsPosition[     44444,       1044]
-NotebookOutlinePosition[     44839,       1060]
-CellTagsIndexPosition[     44796,       1057]
+NotebookDataLength[     45661,       1076]
+NotebookOptionsPosition[     45309,       1062]
+NotebookOutlinePosition[     45704,       1078]
+CellTagsIndexPosition[     45661,       1075]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -22,19 +22,24 @@ Cell[BoxData[
  RowBox[{
   RowBox[{"(*", 
    RowBox[{
-    RowBox[{
-    "Decomposes", " ", "the", " ", "n1xn2", " ", "matrix", " ", "c", " ", 
-     "into", " ", "c"}], "=", 
+   "Various", " ", "functions", " ", "for", " ", "minimally", " ", 
+    "factoring", " ", "a", " ", "tensor", " ", "product", " ", "expression"}],
+    "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"ClearAll", "[", "rankFactorizationSVD", "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
     RowBox[{
      RowBox[{
-      RowBox[{"a", ".", "b"}], " ", "where", " ", "a", " ", "is", " ", "n1xk",
-       " ", "and", " ", "b", " ", "is", " ", "kxn2", " ", "and", " ", "k"}], 
-     " ", "=", " ", 
-     RowBox[{"Rank", 
-      RowBox[{"(", "C", ")"}]}]}]}], "*)"}], "\[IndentingNewLine]", 
-  "\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{"ClearAll", "[", "rankFactorizationSVD", "]"}], "\n", 
+     "Decomposes", " ", "the", " ", "n1xn2", " ", "matrix", " ", "c", " ", 
+      "into", " ", "c"}], "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"a", ".", "b"}], " ", "where", " ", "a", " ", "is", " ", 
+       "n1xk", " ", "and", " ", "b", " ", "is", " ", "kxn2", " ", "and", " ", 
+       "k"}], " ", "=", " ", 
+      RowBox[{"Rank", 
+       RowBox[{"(", "C", ")"}]}]}]}], "*)"}], "\n", 
    RowBox[{
     RowBox[{"rankFactorizationSVD", "[", "c_", "]"}], ":=", 
     RowBox[{"Module", "[", 
@@ -155,8 +160,8 @@ Cell[BoxData[
         "Return", " ", "matrices", " ", "a", " ", "and", " ", "b", " ", "and",
           " ", "rank"}], "*)"}], "\[IndentingNewLine]", 
        RowBox[{"{", 
-        RowBox[{"a", ",", "b", ",", "rank"}], "}"}]}]}], "]"}]}], 
-   "\[IndentingNewLine]", "\n", 
+        RowBox[{"a", ",", "b", ",", "rank"}], "}"}]}]}], "]"}]}], "\n", 
+   "\[IndentingNewLine]", 
    RowBox[{"ClearAll", "[", "rankFactorizationSVDNumerical", "]"}], "\n", 
    RowBox[{
     RowBox[{"rankFactorizationSVDNumerical", "[", "c_", "]"}], ":=", 
@@ -352,7 +357,7 @@ Cell[BoxData[
        "\[IndentingNewLine]", 
        RowBox[{"{", 
         RowBox[{"c", ",", "v", ",", "n1", ",", "u", ",", "n2"}], "}"}]}]}], 
-     "\[IndentingNewLine]", "]"}]}], "\n", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "\n", 
    RowBox[{"ClearAll", "[", "usefulInfo", "]"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"usefulInfo", "[", "expr_", "]"}], ":=", 
@@ -576,6 +581,13 @@ symbolic computation\>\"", "]"}], ";", "\[IndentingNewLine]",
       "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{"ClearAll", "[", "rankFactorToMatrices", "]"}], 
    "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Takes", " ", "an", " ", "expression"}], ",", " ", 
+     RowBox[{
+     "factors", " ", "it", " ", "and", " ", "returns", " ", "the", " ", 
+      "factorization", " ", "matrices", " ", "as", " ", "a", " ", "list"}]}], 
+    "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"rankFactorToMatrices", "[", 
      RowBox[{"expr_", ",", 
@@ -613,6 +625,14 @@ symbolic computation\>\"", "]"}], ";", "\[IndentingNewLine]",
         RowBox[{"d", ",", "e"}], "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
    "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{"ClearAll", "[", "rankFactorToLists", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Takes", " ", "an", " ", "expression"}], ",", " ", 
+     RowBox[{
+     "factors", " ", "it", " ", "and", " ", "returns", " ", "the", " ", 
+      "factorized", " ", "expression", " ", "as", " ", "a", " ", "list", " ", 
+      "of", " ", "contsants"}], ",", " ", "lhs", ",", " ", 
+     RowBox[{"and", " ", "rhs"}]}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"rankFactorToLists", "[", 
      RowBox[{"expr_", ",", 
@@ -682,10 +702,7 @@ symbolic computation\>\"", "]"}], ";", "\[IndentingNewLine]",
        RowBox[{"{", 
         RowBox[{"constants", ",", "lhs", ",", "rhs"}], "}"}]}]}], 
      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
-   "\[IndentingNewLine]", 
-   RowBox[{"(*", 
-    RowBox[{"Compressed", " ", "tensor", " ", "product", " ", "data"}], 
-    "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"prepare", "[", "expr_", "]"}], " ", ":=", "  ", 
     RowBox[{"getTable", "[", 
@@ -1038,9 +1055,10 @@ symbolic computation\>\"", "]"}], ";", "\[IndentingNewLine]",
    3.93073042265639*^9, 3.930730428267281*^9}, {3.930731071052648*^9, 
    3.9307311010586576`*^9}, {3.930997184138886*^9, 3.930997208325051*^9}, {
    3.930997931767077*^9, 3.930997965722295*^9}, {3.931240867509739*^9, 
-   3.931240877627853*^9}, 3.931240951134253*^9},
- CellLabel->
-  "In[306]:=",ExpressionUUID->"e7b0113b-ac3d-468f-945b-501e7c42c191"]
+   3.931240877627853*^9}, 3.931240951134253*^9, {3.9313319027806883`*^9, 
+   3.9313319143352013`*^9}, {3.931331963305914*^9, 
+   3.931332007929185*^9}},ExpressionUUID->"e7b0113b-ac3d-468f-945b-\
+501e7c42c191"]
 },
 WindowSize->{808, 747},
 WindowMargins->{{2, Automatic}, {Automatic, 0}},
@@ -1059,7 +1077,7 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 43882, 1022, 4483, "Input",ExpressionUUID->"e7b0113b-ac3d-468f-945b-501e7c42c191"]
+Cell[558, 20, 44747, 1040, 4546, "Input",ExpressionUUID->"e7b0113b-ac3d-468f-945b-501e7c42c191"]
 }
 ]
 *)

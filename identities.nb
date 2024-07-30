@@ -3,10 +3,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[         0,          0]
-NotebookDataLength[     52745,       1098]
-NotebookOptionsPosition[     52140,       1076]
-NotebookOutlinePosition[     52535,       1092]
-CellTagsIndexPosition[     52492,       1089]
+NotebookDataLength[     52746,       1098]
+NotebookOptionsPosition[     52141,       1076]
+NotebookOutlinePosition[     52536,       1092]
+CellTagsIndexPosition[     52493,       1089]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -34,7 +34,7 @@ Cell[BoxData[
      "it", " ", "returns", " ", "a", " ", "rule", " ", "that", " ", "sends", 
       " ", "the", " ", "most", " ", "complex", " ", "part", " ", "of", " ", 
       "the", " ", "identity", " ", "to", " ", "the", " ", "other", " ", 
-      "ones"}]}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "ones"}]}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{
      RowBox[{"findAnIdentity", "[", "logs_List", "]"}], ":=", 
@@ -1065,8 +1065,8 @@ expression\>\"", "]"}]}], "]"}], ";", "\[IndentingNewLine]",
    3.9312581507414503`*^9, 3.931258176163459*^9}, 3.931258269143824*^9, {
    3.931258354236163*^9, 3.931258365633204*^9}, {3.931258397171648*^9, 
    3.931258422643538*^9}, {3.931258477285501*^9, 3.931258506312761*^9}, {
-   3.93133159752494*^9, 
-   3.931331630928052*^9}},ExpressionUUID->"3a9a1c26-9c35-44c5-89df-\
+   3.93133159752494*^9, 3.931331630928052*^9}, 
+   3.9313318793191977`*^9},ExpressionUUID->"3a9a1c26-9c35-44c5-89df-\
 dd7b3745f89a"],
 
 Cell[BoxData[""], "Input",
@@ -1091,8 +1091,8 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[400, 13, 51558, 1056, 5890, "Input",ExpressionUUID->"3a9a1c26-9c35-44c5-89df-dd7b3745f89a"],
-Cell[51961, 1071, 175, 3, 30, "Input",ExpressionUUID->"2c0ba082-9776-4686-871a-6873501d2ff0"]
+Cell[400, 13, 51559, 1056, 5869, "Input",ExpressionUUID->"3a9a1c26-9c35-44c5-89df-dd7b3745f89a"],
+Cell[51962, 1071, 175, 3, 30, "Input",ExpressionUUID->"2c0ba082-9776-4686-871a-6873501d2ff0"]
 }
 ]
 *)

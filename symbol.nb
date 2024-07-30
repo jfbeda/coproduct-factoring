@@ -3,10 +3,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[         0,          0]
-NotebookDataLength[     23369,        547]
-NotebookOptionsPosition[     22859,        526]
-NotebookOutlinePosition[     23255,        542]
-CellTagsIndexPosition[     23212,        539]
+NotebookDataLength[     24218,        566]
+NotebookOptionsPosition[     23708,        545]
+NotebookOutlinePosition[     24104,        561]
+CellTagsIndexPosition[     24061,        558]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -115,6 +115,10 @@ Cell[BoxData[
           RowBox[{"1", "-", "z"}], "]"}]}], "]"}], "]"}]}]}], ";"}], 
    "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{"ClearAll", "[", "extractList", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Extracts", " ", "the", " ", "list", " ", "that", " ", "defines", " ", 
+     "a", " ", "symbol", " ", "object"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"extractList", "[", "symbol_", "]"}], " ", ":=", " ", 
     RowBox[{"Module", "[", 
@@ -135,8 +139,11 @@ Cell[BoxData[
           "\"\<List Extraction Error, probably you are trying to extract a \
 list from a sum of symbols, not a symbol. Your list is:\>\""}], ",", " ", 
          "list"}], "]"}], ";", "\[IndentingNewLine]", "list"}]}], 
-     "\[IndentingNewLine]", "]"}]}], "\n", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "\n", 
    RowBox[{"ClearAll", "[", "shuffle", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Shuffles", " ", "two", " ", "lists", " ", "together"}], "*)"}], 
+   "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"shuffle", "[", 
      RowBox[{
@@ -169,6 +176,12 @@ list from a sum of symbols, not a symbol. Your list is:\>\""}], ",", " ",
      RowBox[{"set", " ", "termination"}]}], "*)"}], "\n", 
    "\[IndentingNewLine]", 
    RowBox[{"ClearAll", "[", "shuffleProduct", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Generates", " ", "the", " ", "shuffle", " ", "product", " ", "of", " ", 
+     "two", " ", "multiple", " ", "tensor", " ", "products", " ", "by", " ", 
+     "summing", " ", "the", " ", "over", " ", "all", " ", "shuffles"}], 
+    "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"shuffleProduct", "[", 
      RowBox[{"a_", ",", "b_"}], "]"}], " ", ":=", " ", 
@@ -205,6 +218,11 @@ list from a sum of symbols, not a symbol. Your list is:\>\""}], ",", " ",
      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
    "\[IndentingNewLine]", 
    RowBox[{"ClearAll", "[", "getSymbolConstants", "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Finds", " ", "the", " ", "constants", " ", "multiplying", " ", "each", 
+     " ", "multiple", " ", "tensor", " ", "product"}], "*)"}], 
    "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"getSymbolConstants", "[", "expr_", "]"}], ":=", 
@@ -521,7 +539,8 @@ Difference:\>\"", ",",
    3.930031081856439*^9}, 3.930031119928664*^9, {3.9300456281525583`*^9, 
    3.930045706859254*^9}, {3.930045741595731*^9, 3.930045742043689*^9}, {
    3.930108686312034*^9, 3.930108696099118*^9}, {3.930109318298717*^9, 
-   3.930109321956193*^9}},ExpressionUUID->"da925a93-91cb-4437-adc5-\
+   3.930109321956193*^9}, {3.931332032239553*^9, 
+   3.931332102660425*^9}},ExpressionUUID->"da925a93-91cb-4437-adc5-\
 69b33cd4ea6d"]
 },
 WindowSize->{808, 747},
@@ -541,7 +560,7 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[400, 13, 22455, 511, 2215, "Input",ExpressionUUID->"da925a93-91cb-4437-adc5-69b33cd4ea6d"]
+Cell[400, 13, 23304, 530, 2320, "Input",ExpressionUUID->"da925a93-91cb-4437-adc5-69b33cd4ea6d"]
 }
 ]
 *)
